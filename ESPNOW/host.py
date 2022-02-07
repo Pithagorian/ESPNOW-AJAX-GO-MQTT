@@ -8,7 +8,7 @@ wlan.active(True)
 
 e = espnow.ESPNow()
 e.init()
-peer = b'\x1a\x2b\x3c\x4d\x5e\x6f'   # MAC address of client's wifi interface 
+peer = b'\x1a\x2b\x3c\x4d\x5e\x6f'   # MAC address of clients wifi interface 
 e.add_peer(peer)
 
 e.send("Starting...")       # Send to all peers
