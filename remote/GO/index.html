@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+        integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <style>
+        :root {
+            --jblue: rgb(46, 134, 193);
+            --jgreen: rgb(40, 180, 99);
+            --jred: rgb(231, 76, 60);
+            --jyellow: rgb(241, 196, 15)
+        }
+        .set-width-text{ 
+            width: 60%; 
+            margin-inline-start: 22%;
+            text-align: left;
+        }
+        .set-width-box{ 
+            width: 100%;
+            height: 100%;
+            background: rgb(100,100,100);
+        }
+        iframe {
+            border: none;
+        }
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        #circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            -webkit-border-radius: 25px;
+            -moz-border-radius: 25px;
+            background: var(--color);
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center">
+        <!-- <div class="set-width-text" id="circle" style="--color"></div> -->
+        <span id='Remotely pressed'></span>     <!-- dit is tijdleijk-->
+        <div><p></p></div>
+        <div class="btn-group-vertical btn-group-lg" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-primary" onclick="ajaxFunction('blue')">pause</button>
+            <button type="button" class="btn btn-success" onclick="ajaxFunction('green')">-20</button>
+            <button type="button" class="btn btn-success" onclick="ajaxFunction('percent')">%20</button>
+            <button type="button" class="btn btn-danger" onclick="ajaxFunction('red')">+5</button>
+            <button type="button" class="btn btn-warning" onclick="ajaxFunction('yellow')">Explode</button>
+        </div>
+        <div><p></p></div>
+        <div class="input-group mb-3 set-width-text">
+            <input type="text" id="textt" class="form-control" placeholder="Time" aria-label="Time" aria-describedby="basic-addon2">
+            <div class="input-group-append ">
+              <button class="btn btn-outline-secondary set-width-box text-left" type="button" onclick="ajaxFunction('time')">set</button>
+            </div>
+          </div>
+    </div>
+
+    <script language="javascript" type="text/javascript">
+        //Browser Support Code
+        var dict = {
+            'blue': "#2E86C1",
+            'green': "#28B463",
+            'red': "#E74C3C",
+            'yellow': "rgb(241, 196, 15)",
+        };
+
+        function ajaxFunction(colour) {
+            var ajaxRequest; // The variable that makes Ajax possible!    
+            ajaxRequest = new XMLHttpRequest();
+            ajaxRequest.onreadystatechange = function () {
+
+                // if (ajaxRequest.readyState == 4) {
+                //     console.log(ajaxDisplay.val())
+                //     ajaxRequest.send(ajaxDisplay.val());
+
+                // }
+            }
+            ajaxRequest.open("POST", "handler", true);
+            var timee = document.getElementById('textt').value;
+            if (colour == "time") {
+                ajaxRequest.send(timee);
+            } else {
+                ajaxRequest.send(colour);
+            }
+        }
+
+        function ajaxIn() {
+            var ajaxRequest;
+            ajaxRequest = new XMLHttpRequest();
+            ajaxRequest.open("GET", "inhandler", true)
+            ajaxRequest.onreadystatechange = function () {
+                if (ajaxRequest.readyState == 4 && ajaxRequest.status==200) {
+                    var val = ajaxRequest.responseText;
+                    console.log(val)
+                    var a = document.getElementById('Remotely pressed');
+                    a.innerHTML = val
+                    // document.documentElement.style.setProperty("--color", dict[val])
+                    
+                }
+            }
+            ajaxRequest.send();
+
+        }
+        setInterval(ajaxIn, 100)
+    </script>
+</body>
+
+</html>
