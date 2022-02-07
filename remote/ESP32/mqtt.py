@@ -7,8 +7,14 @@ from machine import Pin
 wlan = network.WLAN(network.STA_IF)  # Or network.AP_IF
 wlan.active(True)
 
+dict = {
+    'blue': 0,
+    'green': 1,
+    'red': 2,
+    'yellow': 3}
 def sub_cb(topic, msg):
-    a = int(msg.decode("utf-8"))
+    a = dict[msg.decode("utf-8")]
+    print(a)
     if a < 4 and a >= 0:             # msg == None if timeout in irecv()
         for i in range(4):
             Leds[i].value(0)
@@ -23,7 +29,7 @@ def connect():
   client.set_callback(sub_cb)
   client.connect()
   client.subscribe(topic_sub)
-  print('Connected to %s MQTT broker, subscribed to %s topic' % (mqtt_server, topic))
+  print('Connected to %s MQTT broker, subscribed to %s topic' % (mqtt_server, topic_sub))
   return client
 
 def restart_and_reconnect():
@@ -51,7 +57,6 @@ def on_press():
         if not(e.value()):
             return i
 
-e.send(str(-1))       # Send to all peers
 newstate = -1
 state = -1
 while True:
@@ -70,3 +75,4 @@ while True:
         restart_and_reconnect()
 #     e.send(str(newstate))
    
+
